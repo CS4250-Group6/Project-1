@@ -1,4 +1,6 @@
 import requests
+import time
+import urllib.request
 from bs4 import BeautifulSoup
 
 def can_scrape(url):
@@ -14,20 +16,32 @@ def can_scrape(url):
 	return True
 
 def get_page(url):
-	# requests.get(url)
+	site = requests.get('https://www.marshmellomusic.com/')
 
-	# check status code if status code is 429
-	# set the program to sleep for a few seconds, idk like 3 using the time module and .sleep method
+	if site.status_code == 429:
+		time.sleep(3)
 
-	# if the response code is greater than 299 return none
+	if site.status_code == 299:
+		return None
 
-	# else return the .text of the page
+	if site.status_code == 200:
+		print(site.text)
 
 	pass
 
 def save_page(page):
 
-	# look into how to save the page as html an file, this might be easy, or not, lmk if of any issues you face
+	# Gathering web page source
+	url = input('https://www.marshmellomusic.com')
+	html_name = input('music.html')
+	site = requests.get(url, 'html.parser')
+
+	# Saving and extracting into file, probably
+	with open(html_name, 'w') as f:
+		f.write(site.text)
+		f.close()
+
+	# urllib.request.urlretrieve('https://www.marshmellomusic.com/', 'page.html') # using urllib library as an alternative
 
 	pass
 
