@@ -5,22 +5,11 @@ from collections import Counter
 
 
 def zipfsLaw():
-    fileNames = os.listdir("./repository")
-    wordCounter = Counter()
-    for name in fileNames:
-        if name[-5:] == ".html":
-            with open("./repository/" + name) as f:
-                rawHTML = f.read()
-                bs = BeautifulSoup(rawHTML, "lxml")
-                cleanText = "".join(bs.getText(" ").lower())
-                wordCounter.update(cleanText.split())
-    # TODO handle words that aren't words or that could contain non-letter characters, such as ,()[]{}\|-_=~ etc
-    # TODO make sure wordCounter actually contains all the "textual content"
+    wordCounter = getWordCounter()
     totalWordCount = sum(wordCounter.values())
 
-    wordRanks = sorted(
-        wordCounter, key=lambda x: wordCounter[x], reverse=True
-    )  # Make an array, sorted by word rank. So, index is rank.
+    # Make an array, sorted by word rank. So, index is rank.
+    wordRanks = sorted(wordCounter, key=lambda x: wordCounter[x], reverse=True)
 
     # Calculate the probability of each word
     wordFrequencies = []
@@ -54,6 +43,32 @@ def zipfsLaw():
 
 def heapsLaw():
     pass
+
+
+def getWordCounter() -> Counter:
+    """
+    Generates a Counter of words from all the .html files in the ./repository/ folder.
+
+    Parameters:
+        TODO language (str): a specific language to get the html files for.
+    """
+    fileNames = os.listdir("./repository")
+    wordCounter = Counter()
+    # Parse through all file names in ./repository/
+    for name in fileNames:
+        if name[-5:] == ".html":  # Only open files labeled .html
+            with open("./repository/" + name) as f:
+                rawHTML = f.read()  # Get the raw html
+
+                # Get only the text in the raw html, then make it all lowercase. Then merge all of the texts into a single string.
+                bs = BeautifulSoup(rawHTML, "lxml")
+                cleanText = "".join(bs.getText(" ").lower())
+                wordCounter.update(cleanText.split())  # Add words to wordCounter.
+
+    # TODO handle words that aren't words or that could contain non-letter characters, such as ,()[]{}\|-_=~ etc
+    # TODO make sure wordCounter actually contains all the "textual content"
+
+    return wordCounter
 
 
 if __name__ == "__main__":
