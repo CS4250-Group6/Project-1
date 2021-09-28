@@ -8,42 +8,33 @@ def can_scrape(url):
 	# The url will be a robots.txt url this time so you need to do nothing more than what's written
 
 	# Use Andrews get_page method with the url to get the page
-	# if none return true
+	# if none return true, else...
 
-	# Parse the page and see if we can scrape it
+	# Parse the robots.txt page and see if we can scrape it
 	# return true or false
 
 	return True
 
 def get_page(url):
-	site = requests.get('https://www.marshmellomusic.com/')
+	site = requests.get(url)
 
 	if site.status_code == 429:
 		time.sleep(3)
-
-	if site.status_code == 299:
+		return get_page(url)
+	elif site.status_code < 300
+		return site.text
+	else:
 		return None
 
-	if site.status_code == 200:
-		print(site.text)
 
-	pass
-
-def save_page(page):
-
-	# Gathering web page source
-	url = input('https://www.marshmellomusic.com')
-	html_name = input('music.html')
-	site = requests.get(url, 'html.parser')
+def save_page(page, file_name):
 
 	# Saving and extracting into file, probably
-	with open(html_name, 'w') as f:
-		f.write(site.text)
+	with open(file_name, 'w') as f:
+		f.write(page)
 		f.close()
 
 	# urllib.request.urlretrieve('https://www.marshmellomusic.com/', 'page.html') # using urllib library as an alternative
-
-	pass
 
 def save_csv(url, links):
 
@@ -52,13 +43,18 @@ def save_csv(url, links):
 
 	pass
 
-def get_base_url(url):
-	base_url = url
-
+def replace_http_protocol(url):
+	new_url = url
+	
 	if url[0:7] == "http://":
-		base_url = base_url[7:]
+		new_url = new_url[7:]
 	elif url[0:8] == "https://":
-		base_url = base_url[8:]
+		new_url = new_url[8:]
+		
+	return url
+
+def get_base_url(url):
+	base_url = replace_http_protocol(url)
 
 	url_end = base_url.find('/')
 	if url_end != -1:
@@ -74,7 +70,7 @@ def get_links(page, baseUrl):
 		newUrl = link.get('href')
 
 		if newUrl[0:7] == "http://" or newUrl[0:8] == "https://":
-			links.add(newUrl)
+			links.add(replace_http_protocol(url))
 		else:
 			if newUrl.find(baseUrl) == -1:
 				links.add(baseUrl+newUrl)
@@ -87,7 +83,7 @@ def get_links(page, baseUrl):
 
 
 visited = set()
-crawl = ['https://www.marshmellomusic.com/']
+crawl = ['www.marshmellomusic.com/']
 
 while len(crawl) != 0 and len(visited) < 600:
 
@@ -103,9 +99,9 @@ while len(crawl) != 0 and len(visited) < 600:
 		page = get_page(url)
 
 		if page is not None:
-			# fun(page: String) -> Void: save page
+			# fun(page: String, file_name: String) -> Void: save page
 			# Tasked to: Andrew
-			save_page(page)
+			save_page(page, "page{}.html".format(len(visited)+1))
 			
 			# fun(page: String) -> list(urls: String): parse page for links
 			# Tasked to: Jonathan
@@ -113,5 +109,8 @@ while len(crawl) != 0 and len(visited) < 600:
 
 			# fun(url: String, links: Int) -> Void: save these two values in a csv file (more details above)
 			save_csv(url, len(links))
+			
+			crawl += list(links)
+			time.sleep(.5)
 
 		visited.add(url)
