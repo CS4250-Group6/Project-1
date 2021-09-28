@@ -3,7 +3,7 @@ import time
 import urllib.request
 from bs4 import BeautifulSoup
 
-def can_scrape(url):
+def can_scrape(robots_url, url):
 
 	# The url will be a robots.txt url this time so you need to do nothing more than what's written
 
@@ -92,7 +92,7 @@ while len(crawl) != 0 and len(visited) < 600:
 
 	# fun(url: String) can_scrape -> Bool: parse robots.txt check if the website is allowed to scrape (more details above)
 	# Tasked to: Shurbur
-	if url not in visited and can_scrape(baseUrl + "/robots.txt"):
+	if url not in visited and can_scrape(baseUrl + "/robots.txt", url):
 
 		# fun(url: String) get_page -> String: get page
 		# Tasked to: Andrew
