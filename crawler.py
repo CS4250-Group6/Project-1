@@ -21,7 +21,7 @@ def get_page(url):
 	if site.status_code == 429:
 		time.sleep(3)
 		return get_page(url)
-	elif site.status_code < 300
+	elif site.status_code < 300:
 		return site.text
 	else:
 		return None
