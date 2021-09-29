@@ -52,20 +52,25 @@ def getWordCounter() -> Counter:
     Parameters:
         TODO language (str): a specific language to get the html files for.
     """
-    fileNames = os.listdir("./repository")
+    fileNames = os.listdir("repository")
     wordCounter = Counter()
     # Parse through all file names in ./repository/
     for name in fileNames:
         if name[-5:] == ".html":  # Only open files labeled .html
-            with open("./repository/" + name) as f:
+            filePath = os.path.join("repository", name)
+            with open(filePath) as f:
                 rawHTML = f.read()  # Get the raw html
 
                 # Get only the text in the raw html, then make it all lowercase. Then merge all of the texts into a single string.
                 bs = BeautifulSoup(rawHTML, "lxml")
-                cleanText = "".join(bs.getText(" ").lower())
-                wordCounter.update(cleanText.split())  # Add words to wordCounter.
+                words = bs.getText(" ").split()
+                words = [
+                    x.strip("0123456789~`^%$#@&*?!.;:'()[]{},/|\\><+=_- \"").lower()
+                    for x in words
+                ]
+                wordCounter.update(words)  # Add words to wordCounter.
 
-    # TODO handle words that aren't words or that could contain non-letter characters, such as ,()[]{}\|-_=~ etc
+    del wordCounter[""]
     # TODO make sure wordCounter actually contains all the "textual content"
 
     return wordCounter
