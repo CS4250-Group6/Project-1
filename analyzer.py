@@ -42,7 +42,35 @@ def zipfsLaw():
 
 
 def heapsLaw():
-    pass
+   print("Number of unique words:", unique_word_count()) # prints number of unique words
+
+
+def find_unique_words():
+    fileNames = os.listdir("repository")
+    # Parse through all file names in ./repository/
+    for name in fileNames:
+        if name[-5:] == ".html":  # Only open files labeled .html
+            filePath = os.path.join("repository", name)
+            with open(filePath, encoding="utf8") as f:
+                rawHTML = f.read()  # Get the raw html
+
+                # Get only the text in the raw html, then make it all lowercase. Then merge all of the texts into a single string.
+                bs = BeautifulSoup(rawHTML, "lxml")
+                words = bs.getText(" ").split()
+                words = [
+                    x.strip("0123456789~`^%$#@&*?!.;:'()[]{},/|\\><+=_- \"").lower()
+                    for x in words
+                ]
+                unique_words = []
+                for x in words:
+                    if x not in unique_words:
+                        unique_words.append(x)
+                return unique_words
+
+
+def unique_word_count():
+    unique_count = len(find_unique_words())
+    return unique_count
 
 
 def getWordCounter() -> Counter:
@@ -77,5 +105,9 @@ def getWordCounter() -> Counter:
 
 
 if __name__ == "__main__":
+    
     zipfsLaw()
     heapsLaw()
+  
+  
+    
