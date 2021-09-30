@@ -42,8 +42,25 @@ def zipfsLaw():
 
 
 def heapsLaw():
-   print("Number of unique words:", unique_word_count()) # prints number of unique words
+    vocabulary_size = len(find_unique_words()) # Vocabulary size; number of unique words in document
+    num_of_words = getWordCounter()
+    totalWordCount = sum(num_of_words.values()) # total number of words
 
+    # assign values for parameters k and B
+    # k is usually between 10 and 100 and B is approx. 0.5
+    k = 55 # assign value in range OR
+    #  k = random.randrange(10, 101) # could be random?
+    B = 0.5 # approximately
+    
+    # Graph Labels
+    plt.xlabel("Words in Collection") # this is N; total number of words
+    plt.ylabel("Words in Vocabulary") # this is Vocab size (number of unique words)
+    plt.title("Heap's Law")
+
+    # TODO define scale of x and y axis on graph
+    # TODO plot corresponding data 
+    plt.legend()  # Display the legend
+    plt.show() # show graph
 
 def find_unique_words():
     fileNames = os.listdir("repository")
@@ -105,7 +122,6 @@ def getWordCounter() -> Counter:
 
 
 if __name__ == "__main__":
-    
     zipfsLaw()
     heapsLaw()
   
