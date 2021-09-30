@@ -7,17 +7,24 @@ from bs4 import BeautifulSoup
 def url_robotmerger(robots_url):
   currenturl = get_page('https://'+url+'/robots.txt')
   return currenturl
-def can_scrape(url):
-  yes = url_robotmerger(url).split('\n')
- 
-  for each in yes:
-    print(each)
-    this = each.split(":")
-    
-    if this[0] == "Disallow":
-      return False
-    elif this[0] == "Allow":
-      return True
+	for each_line in split_by_line:
+
+		pre_colon = each_line.split(":")
+		print("each line:",each_line)
+
+		
+
+
+		#print(pre_colon)
+		if pre_colon[0] == "Disallow":
+			
+
+			continue
+
+
+		elif pre_colon[0] == "Allow":
+			return True
+
 
 	# The url will be a robots.txt url this time so you need to do nothing more than what's written
 
