@@ -5,7 +5,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 def url_robotmerger(robots_url):
-  currenturl = get_page(url+'/robots.txt')
+  currenturl = get_page('https://'+url+'/robots.txt')
   return currenturl
 def can_scrape(url):
   yes = url_robotmerger(url).split('\n')
