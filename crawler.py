@@ -9,14 +9,12 @@ def url_robotmerger(robots_url):
   return currenturl
 def can_scrape(url):
   yes = url_robotmerger(url).split('\n')
-  #print(yes)
+ 
   for each in yes:
     print(each)
     this = each.split(":")
-    #print(this)
+    
     if this[0] == "Disallow":
-      #print("False")
-      #print(this[0])
       return False
     elif this[0] == "Allow":
       return True
