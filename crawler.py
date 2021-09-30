@@ -54,8 +54,8 @@ def save_page(page, file_name):
 
 def save_csv(url, links):
 	with open('results.csv','w') as file:
-	writer = csv.writer(file)
-	writer.writerow(url,links)
+		writer = csv.writer(file)
+		writer.writerow(url,links)
 
 def replace_http_protocol(url):
 	new_url = url
