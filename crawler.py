@@ -3,7 +3,22 @@ import time
 import urllib.request
 from bs4 import BeautifulSoup
 
-def can_scrape(robots_url, url):
+def url_robotmerger(robots_url):
+  currenturl = get_page(url+'/robots.txt')
+  return currenturl
+def can_scrape(url):
+  yes = url_robotmerger(url).split('\n')
+  #print(yes)
+  for each in yes:
+    print(each)
+    this = each.split(":")
+    #print(this)
+    if this[0] == "Disallow":
+      #print("False")
+      #print(this[0])
+      return False
+    elif this[0] == "Allow":
+      return True
 
 	# The url will be a robots.txt url this time so you need to do nothing more than what's written
 
@@ -13,7 +28,7 @@ def can_scrape(robots_url, url):
 	# Parse the robots.txt page and see if we can scrape it
 	# return true or false
 
-	return True
+	
 
 def get_page(url):
 	site = requests.get(url)
@@ -37,11 +52,9 @@ def save_page(page, file_name):
 	# urllib.request.urlretrieve('https://www.marshmellomusic.com/', 'page.html') # using urllib library as an alternative
 
 def save_csv(url, links):
-
-	# open a csv file called results.csv
-	# write a new line to the file url(string), links(int)
-
-	pass
+	with open('results.csv','w') as file:
+	writer = csv.writer(file)
+	writer.writerow(url,links)
 
 def replace_http_protocol(url):
 	new_url = url
