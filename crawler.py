@@ -1,5 +1,6 @@
 import requests
 import time
+import csv
 import urllib.request
 from bs4 import BeautifulSoup
 
