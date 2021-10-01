@@ -79,7 +79,7 @@ def replace_http_protocol(url):
 	elif url[0:8] == "https://":
 		new_url = new_url[8:]
 		
-	return url
+	return new_url
 
 def get_base_url(url):
 	base_url = replace_http_protocol(url)
