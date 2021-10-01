@@ -5,34 +5,31 @@ import urllib.request
 from langdetect import detect
 from bs4 import BeautifulSoup
 
-def url_robotmerger(robots_url):
-  print(url+ '/robots.txt')
-  currenturl = ('https://'+url+'/robots.txt')
-  a = get_page(currenturl)
-  return a
-def can_scrape(url):
-	merged_url = url_robotmerger(url)
-	split_by_line = merged_url.split('\n')
-	#print(split_by_line)
 
-	print("made it")
-	for each_line in split_by_line:
+def can_scrape(tobots, url):
+	merged_url = get_page(robots)
+	if merged_url is not None:
+		split_by_line = merged_url.split('\n')
+		#print(split_by_line)
 
-		pre_colon = each_line.split(":")
-		print("each line:",each_line)
+		print("made it")
+		for each_line in split_by_line:
 
-		#print(each_line[0])
+			pre_colon = each_line.split(":")
+			print("each line:",each_line)
+
+			#print(each_line[0])
 
 
-		#print(pre_colon)
-		if pre_colon[0] == "Disallow":
-			print("False")
+			#print(pre_colon)
+			if pre_colon[0] == "Disallow":
+				print("False")
 
-			continue
+				continue
 
 
-		elif pre_colon[0] == "Allow":
-			return True
+			elif pre_colon[0] == "Allow":
+				return True
 
 
 	# The url will be a robots.txt url this time so you need to do nothing more than what's written
@@ -46,7 +43,7 @@ def can_scrape(url):
 	
 
 def get_page(url):
-	site = requests.get(url)
+	site = requests.get("https://" + url)
 
 	if site.status_code == 429:
 		time.sleep(3)
@@ -95,7 +92,7 @@ def get_links(soup, baseUrl):
 
 	for link in soup.findAll('a', href=True, download=None):
 		newUrl = link.get('href')
-		if newUrl:
+		if newUrl is not None:
 			if newUrl[0:7] == "http://" or newUrl[0:8] == "https://":
 				links.add(replace_http_protocol(url))
 			else not (newUrl.startswith('#') or newUrl.startswith('ftp://') or newUrl.startswith('mailto:')):
