@@ -2,6 +2,7 @@ import requests
 import time
 import csv
 import urllib.request
+from langdetect import detect
 from bs4 import BeautifulSoup
 
 def url_robotmerger(robots_url):
@@ -88,9 +89,8 @@ def get_base_url(url):
 		base_url = base_url[:url_end]
 	return base_url
 
-def get_links(page, baseUrl):
+def get_links(soup, baseUrl):
 	links = set()
-	soup = BeautifulSoup(page, "html.parser")
 
 
 	for link in soup.findAll('a', href=True, download=None):
@@ -126,18 +126,20 @@ while len(crawl) != 0 and len(visited) < 600:
 		page = get_page(url)
 
 		if page is not None:
-			# fun(page: String, file_name: String) -> Void: save page
-			# Tasked to: Andrew
-			save_page(page, "page{}.html".format(len(visited)+1))
-			
-			# fun(page: String) -> list(urls: String): parse page for links
-			# Tasked to: Jonathan
-			links = get_links(page, baseUrl)
+			soup = BeautifulSoup(page, "html.parser")
+			if detect(page.get_text()) == 'en':
+				# fun(page: String, file_name: String) -> Void: save page
+				# Tasked to: Andrew
+				save_page(page, "page{}.html".format(len(visited)+1))
 
-			# fun(url: String, links: Int) -> Void: save these two values in a csv file (more details above)
-			save_csv(url, len(links))
-			
-			crawl += list(links)
-			time.sleep(.5)
+				# fun(page: String) -> list(urls: String): parse page for links
+				# Tasked to: Jonathan
+				links = get_links(soup, baseUrl)
+
+				# fun(url: String, links: Int) -> Void: save these two values in a csv file (more details above)
+				save_csv(url, len(links))
+
+				crawl += list(links)
+				time.sleep(.5)
 
 		visited.add(url)
