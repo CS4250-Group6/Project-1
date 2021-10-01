@@ -95,14 +95,14 @@ def get_links(page, baseUrl):
 
 	for link in soup.findAll('a', href=True, download=None):
 		newUrl = link.get('href')
-
-		if newUrl[0:7] == "http://" or newUrl[0:8] == "https://":
-			links.add(replace_http_protocol(url))
-		else:
-			if newUrl.find(baseUrl) == -1:
-				links.add(baseUrl+newUrl)
-			else:
-				links.add(newUrl)
+		if newUrl:
+			if newUrl[0:7] == "http://" or newUrl[0:8] == "https://":
+				links.add(replace_http_protocol(url))
+			else not (newUrl.startswith('#') or newUrl.startswith('ftp://') or newUrl.startswith('mailto:')):
+				if newUrl.find(baseUrl) == -1:
+					links.add(baseUrl+newUrl)
+				else:
+					links.add(newUrl)
 
 	return links
 
