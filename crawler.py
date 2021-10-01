@@ -43,7 +43,7 @@ def can_scrape(tobots, url):
 	
 
 def get_page(url):
-	site = requests.get("https://" + url)
+	site = requests.get("http://" + url)
 
 	if site.status_code == 429:
 		time.sleep(3)
