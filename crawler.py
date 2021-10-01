@@ -5,19 +5,27 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 def url_robotmerger(robots_url):
-  currenturl = get_page('https://'+url+'/robots.txt')
-  return currenturl
+  print(url+ '/robots.txt')
+  currenturl = ('https://'+url+'/robots.txt')
+  a = get_page(currenturl)
+  return a
+def can_scrape(url):
+	merged_url = url_robotmerger(url)
+	split_by_line = merged_url.split('\n')
+	#print(split_by_line)
+
+	print("made it")
 	for each_line in split_by_line:
 
 		pre_colon = each_line.split(":")
 		print("each line:",each_line)
 
-		
+		#print(each_line[0])
 
 
 		#print(pre_colon)
 		if pre_colon[0] == "Disallow":
-			
+			print("False")
 
 			continue
 
