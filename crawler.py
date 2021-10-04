@@ -7,30 +7,43 @@ from bs4 import BeautifulSoup
 
 
 def can_scrape(robots, url):
-	merged_url = get_page(robots)
-	if merged_url is not None:
-		split_by_line = merged_url.split('\n')
+	print(url)
+	merged_url = (url+ '/robots.txt')
+	open_page = get_page(robots)
+	if open_page is not None:
+		split_by_line = open_page.split('\n')
+		#print(url)
+
 		#print(split_by_line)
-
-		print("made it")
 		for each_line in split_by_line:
-
-			pre_colon = each_line.split(":")
-			print("each line:",each_line)
-
+			#print(each_line)
+			if ':' in each_line:
+				pre_colon = each_line.split(":")
+				print(merged_url)
+				beginning = merged_url.split('/')
+				#print("pre_colon:",pre_colon[1])
+				print(pre_colon[1])
+				print('beginning:',beginning[1])
+				if beginning[1] in pre_colon[1]:
+					print("WORKED")
+					print(url)
 			#print(each_line[0])
 
 
 			#print(pre_colon)
-			if pre_colon[0] == "Disallow":
-				print("False")
+					if pre_colon[0] == "Disallow":
 
+						continue
+
+
+					elif pre_colon[0] == "Allow":
+						return True
+				else:
+					return True
+			else:
 				continue
-
-
-			elif pre_colon[0] == "Allow":
-				return True
-
+	else:
+		return True
 
 	# The url will be a robots.txt url this time so you need to do nothing more than what's written
 
@@ -64,9 +77,10 @@ def save_page(page, file_name):
 	# urllib.request.urlretrieve('https://www.marshmellomusic.com/', 'page.html') # using urllib library as an alternative
 
 def save_csv(url, links):
-	with open('results.csv','w') as file:
+	with open('Project_1_results.csv','x') as file:
 		writer = csv.writer(file)
-		writer.writerow(url,links)
+		row = url,links
+		writer.writerow(row)
 
 def replace_http_protocol(url):
 	new_url = url
