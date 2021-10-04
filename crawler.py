@@ -6,7 +6,7 @@ from langdetect import detect
 from bs4 import BeautifulSoup
 
 
-def can_scrape(tobots, url):
+def can_scrape(robots, url):
 	merged_url = get_page(robots)
 	if merged_url is not None:
 		split_by_line = merged_url.split('\n')
@@ -95,7 +95,7 @@ def get_links(soup, baseUrl):
 		if newUrl is not None:
 			if newUrl[0:7] == "http://" or newUrl[0:8] == "https://":
 				links.add(replace_http_protocol(url))
-			else not newUrl.startswith('#') and not newUrl.startswith('ftp://') and not newUrl.startswith('mailto:')):
+			elif not newUrl.startswith('#') and not newUrl.startswith('ftp://') and not newUrl.startswith('mailto:'):
 				if newUrl.find(baseUrl) == -1:
 					links.add(baseUrl+newUrl)
 				else:
