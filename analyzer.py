@@ -16,14 +16,11 @@ def zipfsLaw():
     for w in wordRanks:
         wordFrequencies.append(wordCounter[w])
 
-    # for i in range(len(wordRanks)):
-    #     print(i*wordProbabilities[i])
-
-    # Plot the Ziph's Law line.
-    ziphLineY = []
+    # Plot the Zipf's Law line.
+    zipfLineY = []
     K = 0.1 * totalWordCount
-    ziphLineY.extend([K / (x + 1) for x in range(len(wordRanks))])
-    plt.plot(range(1, len(wordRanks) + 1), ziphLineY, label="Zipf", c="g")
+    zipfLineY.extend([K / (x + 1) for x in range(len(wordRanks))])
+    plt.plot(range(1, len(wordRanks) + 1), zipfLineY, label="Zipf", c="g")
 
     # Graph the probabilities vs rank:
     plt.scatter(range(1, len(wordRanks) + 1), wordFrequencies, s=5, label="Data", c="r")
@@ -96,12 +93,13 @@ def getWordCounter() -> Counter:
     Parameters:
         TODO language (str): a specific language to get the html files for.
     """
-    fileNames = os.listdir("repository")
+    path = os.path.join("repository", selectedLanguage)
+    fileNames = os.listdir(path)
     wordCounter = Counter()
     # Parse through all file names in ./repository/
     for name in fileNames:
         if name[-5:] == ".html":  # Only open files labeled .html
-            filePath = os.path.join("repository", name)
+            filePath = os.path.join(path, name)
             with open(filePath) as f:
                 rawHTML = f.read()  # Get the raw html
 
@@ -121,5 +119,7 @@ def getWordCounter() -> Counter:
 
 
 if __name__ == "__main__":
+    global selectedLanguage
+    selectedLanguage = "fr"
     zipfsLaw()
     heapsLaw()
