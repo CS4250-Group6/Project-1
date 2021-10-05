@@ -109,10 +109,13 @@ def get_links(soup, baseUrl):
             if newUrl[0:7] == "http://" or newUrl[0:8] == "https://":
                 links.add(replace_http_protocol(url))
             elif (
+                newUrl.startswith("//")
+            ):
+                links.add(newUrl[2:])
+            elif (
                 not newUrl.startswith("#")
                 and not newUrl.startswith("ftp://")
                 and not newUrl.startswith("mailto:")
-                and not newUrl.startswith("//")
                 and not newUrl == ""
             ):
                 if newUrl.find(baseUrl) == -1:
