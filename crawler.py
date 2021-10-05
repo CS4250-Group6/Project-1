@@ -7,7 +7,11 @@ from bs4 import BeautifulSoup
 
 
 def can_scrape(robots: str, url: str):
-    open_page = get_page(robots)
+    try:
+        open_page = get_page(robots)
+    except:
+        return False
+
     if open_page is not None:
 
         startAgentBlock = open_page.find("User-agent: *")
@@ -74,7 +78,7 @@ def save_page(page, file_name):
 
 
 def save_csv(url, links):
-    with open("report.csv", "a") as file:
+    with open(f"report{selectedLanguage.upper()}.csv", "a") as file:
         writer = csv.writer(file)
         row = url, links
         writer.writerow(row)
@@ -127,8 +131,8 @@ def get_links(soup, baseUrl):
 
 
 visited = set()
-crawl = ["en.wikipedia.org/wiki/Web_crawler"]
-selectedLanguage = "en"
+crawl = ["es.wikipedia.org/wiki/Araña_web"]
+selectedLanguage = "es"
 searchCount = 600
 
 while len(crawl) != 0 and len(visited) < searchCount:
@@ -162,4 +166,4 @@ while len(crawl) != 0 and len(visited) < searchCount:
                 crawl += list(links)
                 time.sleep(0.5)
 
-        visited.add(url)
+                visited.add(url)
