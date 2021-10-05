@@ -112,6 +112,7 @@ def get_links(soup, baseUrl):
                 not newUrl.startswith("#")
                 and not newUrl.startswith("ftp://")
                 and not newUrl.startswith("mailto:")
+                and not newUrl == ""
             ):
                 if newUrl.find(baseUrl) == -1:
                     links.add(baseUrl + newUrl)
