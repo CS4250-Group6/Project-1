@@ -27,7 +27,6 @@ def zipfsLaw():
 
     # Graph the probabilities vs rank:
     plt.scatter(range(1, len(wordRanks) + 1), wordFrequencies, s=5, label="Data", c="r")
-    # plt.locator_params(nbins=10)
 
     # Naming stuff
     plt.xlabel("Rank\n(by decreasing frequency)")
@@ -124,6 +123,3 @@ def getWordCounter() -> Counter:
 if __name__ == "__main__":
     zipfsLaw()
     heapsLaw()
-  
-  
-    
