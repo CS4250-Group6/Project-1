@@ -16,13 +16,13 @@ def can_scrape(robots: str, url: str):
 
         startAgentBlock = open_page.find("User-agent: *")
         if startAgentBlock == -1:
-            return True
+            # If robots.txt exists and no wildcard user-agent exists, then we aren't allowed to crawl.
+            return False
 
         endAgentBlock = open_page.find("\n\n", startAgentBlock)
         if endAgentBlock == -1:
             # If no \n\n (2 return characters) and startAgentBlock exists, then assume that the block ends at the end of the document.
             endAgentBlock = len(open_page)
-            return True
 
         ourBlock = open_page[startAgentBlock:endAgentBlock]
         split_by_line = ourBlock.split("\n")
@@ -38,12 +38,12 @@ def can_scrape(robots: str, url: str):
                 # print("path:", pathPlusExtra)
                 if pre_colon[1].strip() in pathPlusExtra:
                     # print(pre_colon[1].strip())
-                    if pre_colon[0] == "Disallow":
-                        print("DISALLOWED", pre_colon[1].strip(), url)
-                        return False
-                    elif pre_colon[0] == "Allow":
+                    if pre_colon[0] == "Allow":
                         print("EXPLICITLY ALLOWED")
                         return True
+                    elif pre_colon[0] == "Disallow":
+                        print("DISALLOWED", pre_colon[1].strip(), url)
+                        return False
     return True
 
 
