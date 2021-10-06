@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 import os
 from collections import Counter
+import re
 
 
 def zipfsLaw():
@@ -28,7 +29,7 @@ def zipfsLaw():
     # Naming stuff
     plt.xlabel("Rank\n(by decreasing frequency)")
     plt.ylabel("Frequency")
-    plt.title("Zipf's Law")
+    plt.title("Zipf's Law " + languageName)
 
     # Make x and y scale log base 10
     plt.yscale("log", base=10)
@@ -42,8 +43,10 @@ def heapsLaw():
 
     # Graph Labels
     plt.xlabel("Words in Collection")  # this is the total number of words
-    plt.ylabel("Words in Vocabulary")  # this is the vocabulary size (number of unique words)
-    plt.title("Heap's Law")
+    plt.ylabel(
+        "Words in Vocabulary"
+    )  # this is the vocabulary size (number of unique words)
+    plt.title("Heap's Law " + languageName)
 
     # scale of x and y axis on graph is normal
 
@@ -67,11 +70,11 @@ def getVocabList() -> list[int]:
 
                 # Get only the text in the raw html, then make it all lowercase. Then merge all of the texts into a single string.
                 bs = BeautifulSoup(rawHTML, "lxml")
-                words = bs.getText(" ").split()
-                words = [
-                    x.strip("0123456789~`^%$#@&*?!.;:'()[]{},/|\\><+=_- \"").lower()
-                    for x in words
-                ]
+                words = re.findall(
+                    "[^\W_\d]+",
+                    bs.getText(" ").lower(),
+                    flags=re.UNICODE | re.IGNORECASE,
+                )
 
                 for word in words:
                     if word not in uniqueWords:
@@ -101,11 +104,11 @@ def getWordCounter() -> Counter:
 
                 # Get only the text in the raw html, then make it all lowercase. Then merge all of the texts into a single string.
                 bs = BeautifulSoup(rawHTML, "lxml")
-                words = bs.getText(" ").split()
-                words = [
-                    x.strip("0123456789~`^%$#@&*?!.;:'()[]{},/|\\><+=_- \"").lower()
-                    for x in words
-                ]
+                words = re.findall(
+                    "[^\W_\d]+",
+                    bs.getText(" ").lower(),
+                    flags=re.UNICODE | re.IGNORECASE,
+                )
                 wordCounter.update(words)  # Add words to wordCounter.
 
     del wordCounter[""]
@@ -114,8 +117,23 @@ def getWordCounter() -> Counter:
     return wordCounter
 
 
+def topHundredWords():
+    words = getWordCounter()
+    wordL = words.most_common()
+    outStr = ""
+    for i in range(0, 100):
+        if i == 99:
+            outStr += wordL[i][0]
+        else:
+            outStr += wordL[i][0] + ", "
+    print(outStr)
+
+
 if __name__ == "__main__":
     global selectedLanguage
-    selectedLanguage = "es"
-    # zipfsLaw()
+    global languageName
+    selectedLanguage = "en"
+    languageName = "English"
+    zipfsLaw()
     heapsLaw()
+    topHundredWords()

@@ -131,8 +131,8 @@ def get_links(soup, baseUrl):
 
 
 visited = set()
-crawl = ["es.wikipedia.org/wiki/Araña_web"]
-selectedLanguage = "es"
+crawl = ["fr.wikipedia.org/wiki/Robot_d'indexation"]
+selectedLanguage = "fr"
 searchCount = 600
 
 while len(crawl) != 0 and len(visited) < searchCount:
