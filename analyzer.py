@@ -27,7 +27,7 @@ def zipfsLaw():
     plt.scatter(range(1, len(wordRanks) + 1), wordFrequencies, s=5, label="Data", c="r")
 
     # Naming stuff
-    plt.xlabel("Rank\n(by decreasing frequency)")
+    plt.xlabel("Rank")
     plt.ylabel("Frequency")
     plt.title("Zipf's Law " + languageName)
 
@@ -35,7 +35,9 @@ def zipfsLaw():
     plt.yscale("log", base=10)
     plt.xscale("log", base=10)
     plt.legend()  # Display the legend
-    plt.show()
+    plt.savefig(f"Zipfs{selectedLanguage}.png")
+    plt.close()
+    # plt.show()
 
 
 def heapsLaw():
@@ -53,7 +55,10 @@ def heapsLaw():
     # plot corresponding data using a line to represent Heap's Law implementation
     plt.plot(range(len(vocabList)), vocabList, label="Data", c="b")
     plt.legend()  # Display the legend
-    plt.show()  # show graph
+    plt.savefig(f"Heaps{selectedLanguage}.png")
+    print(vocabList[-1])
+    plt.close()
+    # plt.show()  # show graph
 
 
 def getVocabList() -> list[int]:
@@ -132,8 +137,8 @@ def topHundredWords():
 if __name__ == "__main__":
     global selectedLanguage
     global languageName
-    selectedLanguage = "en"
-    languageName = "English"
+    selectedLanguage = "fr"
+    languageName = "French"
     zipfsLaw()
     heapsLaw()
-    topHundredWords()
+    # topHundredWords()
